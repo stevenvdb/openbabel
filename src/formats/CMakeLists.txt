@@ -58,6 +58,7 @@ endif(MSVC OR HAVE_REGEX_H)
 
 set(formats_json
   chemdoodlejsonformat
+  pubchemjsonformat
 )
 
 set(formats_misc
