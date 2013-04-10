@@ -2121,6 +2121,7 @@ namespace OpenBabel
       return(true);
 
     bool hasChiralityPerceived = this->HasChiralityPerceived(); // remember
+    bool hasImplicitValencePerceived = this->HasImplicitValencePerceived(); // remember
 
     /*
     //
@@ -2154,6 +2155,9 @@ namespace OpenBabel
     // on unspecified chiral centers, for example)
     if (hasChiralityPerceived)
       this->SetChiralityPerceived();
+    // If implicit valence was already perceived, remember (e.g. custom valence model)
+    if (hasImplicitValencePerceived)
+      this->SetImplicitValencePerceived();
 
     //count up number of hydrogens to add
     OBAtom *atom,*h;
