@@ -4297,11 +4297,11 @@ namespace OpenBabel
             }
             scores[n] = score;
           }
-		  for (int n = 1; n < scores.size(); n++) {
-		    if (scores[n] < scores[bi]) {
-		      bi = n;
-		    }
-		  }
+          for (int n = 1; n < scores.size(); n++) {
+            if (scores[n] < scores[bi]) {
+              bi = n;
+            }
+          }
         }
         OBBond *bond = bonds[bi];
         bonds.erase(bonds.begin() + bi);
@@ -4324,11 +4324,11 @@ namespace OpenBabel
         } else if (lb.second > 0 && le.first > 0) {
           chg = 1;  //  no matching capacity; do not charge separate
         }
-		// adjust bond order and atom charges accordingly
-		bgn->SetFormalCharge(bgn->GetFormalCharge()+chg);
-		end->SetFormalCharge(end->GetFormalCharge()-chg);
-		bond->SetBondOrder(ord);
-		converted = true;
+        // adjust bond order and atom charges accordingly
+        bgn->SetFormalCharge(bgn->GetFormalCharge()+chg);
+        end->SetFormalCharge(end->GetFormalCharge()-chg);
+        bond->SetBondOrder(ord);
+        converted = true;
       }
     }
     return converted;
