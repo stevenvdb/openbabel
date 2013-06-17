@@ -2306,7 +2306,7 @@ namespace OpenBabel
 
     double scale = sqrt(sum);
     if (IsNearZero(scale)) {
-      cout << "WARNING: too small \"scale\" at Newton2NumLineSearch" << endl;
+      cerr << "WARNING: too small \"scale\" at Newton2NumLineSearch" << endl;
       scale = 1.0e-70; // try to avoid "division by zero" conditions
     }
 
