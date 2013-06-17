@@ -72,7 +72,7 @@ namespace OpenBabel {
     double energy = 0.0;
 
     IF_OBFF_LOGLVL_HIGH {
-      OBFFLog("\nB O N D   S T R E T C H I N G\n\n");
+      OBFFLog("\nB O N D   S T R E T C H I N G \n\n");
       OBFFLog("ATOM TYPES  BOND    BOND       IDEAL       FORCE\n");
       OBFFLog(" I      J   TYPE   LENGTH     LENGTH     CONSTANT      DELTA      ENERGY\n");
       OBFFLog("------------------------------------------------------------------------\n");
@@ -89,8 +89,8 @@ namespace OpenBabel {
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%-5s %-5s  %4.2f%8.3f   %8.3f     %8.3f   %8.3f   %8.3f\n",
-                 (*i).a->GetType(), (*i).b->GetType(),
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d  %4.2f%8.3f   %8.3f     %8.3f   %8.3f   %8.3f\n",
+                 (*i).a->GetIdx(), (*i).b->GetIdx(),
                  (*i).bt, (*i).rab, (*i).r0, (*i).kb, (*i).delta, (*i).energy);
         OBFFLog(_logbuf);
       }
@@ -213,8 +213,8 @@ namespace OpenBabel {
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%-5s %-5s %-5s%8.3f  %8.3f     %8.3f   %8.3f   %8.3f\n", (*i).a->GetType(), (*i).b->GetType(),
-                 (*i).c->GetType(), (*i).theta * RAD_TO_DEG, (*i).theta0, (*i).ka, (*i).delta, (*i).energy);
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %-5d%8.3f  %8.3f     %8.3f   %8.3f   %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
+                 (*i).c->GetIdx(), (*i).theta * RAD_TO_DEG, (*i).theta0, (*i).ka, (*i).delta, (*i).energy);
         OBFFLog(_logbuf);
       }
     }
@@ -300,9 +300,9 @@ namespace OpenBabel {
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%-5s %-5s %-5s %-5s%6.3f       %8.3f     %8.3f\n",
-                 (*i).a->GetType(), (*i).b->GetType(),
-                 (*i).c->GetType(), (*i).d->GetType(), (*i).V,
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %-5d %-5d%6.3f       %8.3f     %8.3f\n",
+                 (*i).a->GetIdx(), (*i).b->GetIdx(),
+                 (*i).c->GetIdx(), (*i).d->GetIdx(), (*i).V,
                  (*i).tor * RAD_TO_DEG, (*i).energy);
         OBFFLog(_logbuf);
       }
@@ -382,7 +382,7 @@ namespace OpenBabel {
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%-5s %-5s %-5s %-5s%8.3f   %8.3f     %8.3f\n", (*i).a->GetType(), (*i).b->GetType(), (*i).c->GetType(), (*i).d->GetType(),
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %-5d %-5d%8.3f   %8.3f     %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(), (*i).c->GetIdx(), (*i).d->GetIdx(),
                  (*i).angle * RAD_TO_DEG, (*i).koop, (*i).energy);
         OBFFLog(_logbuf);
       }
@@ -472,8 +472,8 @@ namespace OpenBabel {
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%-5s %-5s %8.3f  %8.3f  %8.3f\n", (*i).a->GetType(), (*i).b->GetType(),
-                 (*i).rab, (*i).kab, (*i).energy);
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %8.7f  %8.3f  %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
+                 (*i).ka, (*i).kab, (*i).energy);
         OBFFLog(_logbuf);
       }
     }
