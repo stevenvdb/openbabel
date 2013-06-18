@@ -197,7 +197,7 @@ namespace OpenBabel {
     IF_OBFF_LOGLVL_HIGH {
       OBFFLog("\nA N G L E   B E N D I N G\n\n");
       OBFFLog("ATOM TYPES       VALENCE     IDEAL      FORCE\n");
-      OBFFLog(" I    J    K      ANGLE      ANGLE     CONSTANT      DELTA      ENERGY\n");
+      OBFFLog(" I    J    K      ANGLE      ANGLE     CONSTANT      DELTA      ENERGY      c0     c1      c2      coord\n");
       OBFFLog("-----------------------------------------------------------------------------\n");
     }
 
@@ -213,8 +213,8 @@ namespace OpenBabel {
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %-5d%8.3f  %8.3f     %8.3f   %8.3f   %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
-                 (*i).c->GetIdx(), (*i).theta * RAD_TO_DEG, (*i).theta0, (*i).ka, (*i).delta, (*i).energy);
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %-5d%8.3f  %8.3f     %8.3f   %8.3f   %8.3f %8.3f %8.3f %8.3f %8d\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
+                 (*i).c->GetIdx(), (*i).theta * RAD_TO_DEG, (*i).theta0, (*i).ka, (*i).delta, (*i).energy,  (*i).c0, (*i).c1, (*i).c2, (*i).coord);
         OBFFLog(_logbuf);
       }
     }
@@ -283,7 +283,7 @@ namespace OpenBabel {
     IF_OBFF_LOGLVL_HIGH {
       OBFFLog("\nT O R S I O N A L\n\n");
       OBFFLog("----ATOM TYPES-----    FORCE         TORSION\n");
-      OBFFLog(" I    J    K    L     CONSTANT        ANGLE         ENERGY\n");
+      OBFFLog(" I    J    K    L     CONSTANT        ANGLE         ENERGY     n   cosNPhi0\n");
       OBFFLog("----------------------------------------------------------------\n");
     }
 
@@ -300,10 +300,10 @@ namespace OpenBabel {
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %-5d %-5d%6.3f       %8.3f     %8.3f\n",
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d %-5d %-5d%6.3f       %8.3f     %8.3f %5d %8.3f\n",
                  (*i).a->GetIdx(), (*i).b->GetIdx(),
                  (*i).c->GetIdx(), (*i).d->GetIdx(), (*i).V,
-                 (*i).tor * RAD_TO_DEG, (*i).energy);
+                 (*i).tor * RAD_TO_DEG, (*i).energy, (*i).n, (*i).cosNPhi0);
         OBFFLog(_logbuf);
       }
     }
@@ -727,7 +727,7 @@ namespace OpenBabel {
 
   bool OBForceFieldUFF::SetupCalculations()
   {
-    OBFFParameter *parameterA, *parameterB, *parameterC;
+    OBFFParameter *parameterA, *parameterB, *parameterC, *parameterD;
     OBAtom *a, *b, *c, *d;
     double bondorder;
     OBFFBondCalculationUFF bondcalc;
@@ -947,6 +947,7 @@ namespace OpenBabel {
       parameterB = GetParameterUFF(b->GetType(), _ffparams);
       parameterC = GetParameterUFF(c->GetType(), _ffparams);
 
+
       if (parameterA == NULL || parameterB == NULL || parameterC == NULL) {
         IF_OBFF_LOGLVL_LOW {
           snprintf(_logbuf, BUFF_SIZE, "    COULD NOT FIND PARAMETERS FOR ANGLE %d-%d-%d (IDX)...\n",
@@ -1124,7 +1125,6 @@ namespace OpenBabel {
     //
     IF_OBFF_LOGLVL_LOW
       OBFFLog("SETTING UP TORSION CALCULATIONS...\n");
-
     double torsiontype;
     double phi0 = 0.0;
 
@@ -1165,8 +1165,10 @@ namespace OpenBabel {
       torsioncalc.d = d;
       torsioncalc.tt = torsiontype;
 
+      parameterA = GetParameterUFF(a->GetType(), _ffparams);
       parameterB = GetParameterUFF(b->GetType(), _ffparams);
       parameterC = GetParameterUFF(c->GetType(), _ffparams);
+      parameterD = GetParameterUFF(d->GetType(), _ffparams);
 
       if (parameterB == NULL || parameterC == NULL) {
         IF_OBFF_LOGLVL_LOW {
@@ -1223,8 +1225,8 @@ namespace OpenBabel {
         torsioncalc.V = 0.5 * KCAL_TO_KJ * 5.0 *
           sqrt(parameterB->_dpar[7]*parameterC->_dpar[7]) *
           (1.0 + 4.18 * log(torsiontype));
-      } else if ((parameterB->_ipar[0] == 2 && parameterC->_ipar[0] == 3)
-                 || (parameterB->_ipar[0] == 3 && parameterC->_ipar[0] == 2)) {
+      } else if ((parameterB->_ipar[0] == 2 && parameterC->_ipar[0] == 3 && parameterA->_ipar[0] != 2)
+                 || (parameterB->_ipar[0] == 3 && parameterC->_ipar[0] == 2 && parameterD->_ipar[0] != 2)) {
         // one sp3, one sp2
         phi0 = 0.0;
         torsioncalc.n = 6;
@@ -1253,6 +1255,12 @@ namespace OpenBabel {
             phi0 = 90.0;
           }
         }
+      } else if ((parameterB->_ipar[0] == 2 && parameterC->_ipar[0] == 3 && parameterA->_ipar[0] == 2) 
+                 || (parameterC->_ipar[0] == 2 && parameterB->_ipar[0] == 3 && parameterD->_ipar[0] == 2)) {
+        // special case of sp2-sp3 with sp2-sp2
+        phi0 = 180.0;
+        torsioncalc.n = 3;
+        torsioncalc.V = 0.5 * KCAL_TO_KJ * 2.0;
       }
 
       if (IsNearZero(torsioncalc.V)) // don't bother calcuating this torsion
