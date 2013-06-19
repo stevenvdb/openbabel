@@ -78,7 +78,7 @@ namespace OpenBabel
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%s %s    %d   %8.3f   %8.3f     %8.3f   %8.3f   %8.3f\n", (*i).a->GetType(), (*i).b->GetType(),
+        snprintf(_logbuf, BUFF_SIZE, "%4d %4d    %d   %8.3f   %8.3f     %8.3f   %8.3f   %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
                 (*i).bt, (*i).rab, (*i).r0, (*i).kb, (*i).delta, (*i).energy);
         OBFFLog(_logbuf);
       }
@@ -148,8 +148,8 @@ namespace OpenBabel
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%s %s %s  %8.3f   %8.3f     %8.3f   %8.3f   %8.3f\n", (*i).a->GetType(), (*i).b->GetType(),
-                (*i).c->GetType(), (*i).theta, (*i).theta0, (*i).ka, (*i).delta, (*i).energy);
+        snprintf(_logbuf, BUFF_SIZE, "%4d %4d %4d  %8.3f   %8.3f     %8.3f   %8.3f   %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
+                (*i).c->GetIdx(), (*i).theta, (*i).theta0, (*i).ka, (*i).delta, (*i).energy);
         OBFFLog(_logbuf);
       }
     }
@@ -228,8 +228,8 @@ namespace OpenBabel
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%s %s %s %s    %6.3f    %5.0f   %8.3f   %1.0f   %8.3f\n", (*i).a->GetType(), (*i).b->GetType(),
-                (*i).c->GetType(), (*i).d->GetType(), (*i).V, (*i).s, (*i).tor, (*i).n, (*i).energy);
+        snprintf(_logbuf, BUFF_SIZE, "%4d %4d %4d %4d    %6.3f    %5.0f   %8.3f   %1.0f   %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
+                (*i).c->GetIdx(), (*i).d->GetIdx(), (*i).V, (*i).s, (*i).tor, (*i).n, (*i).energy);
         OBFFLog(_logbuf);
       }
     }
@@ -281,7 +281,7 @@ namespace OpenBabel
     IF_OBFF_LOGLVL_HIGH {
       OBFFLog("\nV A N   D E R   W A A L S\n\n");
       OBFFLog("ATOM TYPES\n");
-      OBFFLog(" I    J        Rij       kij       ENERGY\n");
+      OBFFLog(" I    J        Rij       kij       ENERGY     SIGMA'6   SIGMA'12\n");
       OBFFLog("-----------------------------------------\n");
       //          XX   XX     -000.000  -000.000  -000.000  -000.000
     }
@@ -302,8 +302,10 @@ namespace OpenBabel
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%s %s   %8.3f  %8.3f  %8.3f\n", (*i).a->GetType(), (*i).b->GetType(),
-                (*i).rab, (*i).kab, (*i).energy);
+        double sigma_a6 = (*i).sigma6/pow(4.0*(*i).kab, 1.0/6.0); 
+        double sigma_a12 = (*i).sigma12/pow(4.0*(*i).kab, 1.0/12.0); 
+        snprintf(_logbuf, BUFF_SIZE, "%4d %4d   %8.3f  %8.3f  %8.3f  %8.3f  %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
+                (*i).rab, (*i).kab, (*i).energy,sigma_a6,sigma_a12);
         OBFFLog(_logbuf);
       }
     }
@@ -370,7 +372,7 @@ namespace OpenBabel
       }
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%s %s   %8.3f  %8.3f  %8.3f\n", (*i).a->GetType(), (*i).b->GetType(),
+        snprintf(_logbuf, BUFF_SIZE, "%4d %4d   %8.3f  %8.3f  %8.3f\n", (*i).a->GetIdx(), (*i).b->GetIdx(),
                 (*i).rab, (*i).qq, (*i).energy);
         OBFFLog(_logbuf);
       }
