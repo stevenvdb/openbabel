@@ -1384,7 +1384,7 @@ namespace OpenBabel
       n = 1;
       pi_electrons = 0;
       c60 = 0; // we have a special case to get c60 right (all atom type 37)
-      for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();rj++) { // for each ring atom
+      for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();++rj) { // for each ring atom
         index = *rj;
         ringatom = _mol.GetAtom(index);
 
@@ -1449,7 +1449,7 @@ namespace OpenBabel
       if (((pi_electrons == 6) && ((ringsize == 5) || (ringsize == 6)))
         || ((pi_electrons == 5) && (c60 == 5))) {
         // mark ring atoms as aromatic
-        for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();rj++) {
+        for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();++rj) {
           if (!_mol.GetAtom(*rj)->IsAromatic())
             done = true;
           _mol.GetAtom(*rj)->SetAromatic();
@@ -3860,11 +3860,11 @@ namespace OpenBabel
         vector<int>::iterator rj;
         int n_count;
 
-        for (ri = vr.begin();ri != vr.end();ri++) { // for each ring
+        for (ri = vr.begin();ri != vr.end();++ri) { // for each ring
           n_count = 0;
 
           if ((*ri)->IsAromatic() && (*ri)->IsMember(&*atom) && ((*ri)->Size() == 5)) {
-            for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();rj++) // for each ring atom
+            for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();++rj) // for each ring atom
               if (_mol.GetAtom(*rj)->IsNitrogen())
                 n_count++;
 
@@ -3879,10 +3879,10 @@ namespace OpenBabel
         vr = _mol.GetSSSR();
         vector<OBRing*>::iterator ri;
         vector<int>::iterator rj;
-        for (ri = vr.begin();ri != vr.end();ri++) // for each ring
+        for (ri = vr.begin();ri != vr.end();++ri) // for each ring
           if ((*ri)->IsAromatic() && (*ri)->IsMember(&*atom) && ((*ri)->Size() == 5)) {
             int n_count = 0;
-            for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();rj++) // for each ring atom
+            for(rj = (*ri)->_path.begin();rj != (*ri)->_path.end();++rj) // for each ring atom
               if (_mol.GetAtom(*rj)->IsNitrogen() && (_mol.GetAtom(*rj)->GetValence() == 3))
                 n_count++;
 
@@ -4202,7 +4202,7 @@ namespace OpenBabel
 
       ni = 1;
       failed = false;
-      for (i = types.begin(); i != types.end();i++) {
+      for (i = types.begin(); i != types.end();++i) {
         if (ni > _mol.NumAtoms())
           continue;
 
@@ -4236,7 +4236,7 @@ namespace OpenBabel
       cout << "----------------------------------------" << endl;
 
       ni = 1;
-      for (di = fcharges.begin(); di != fcharges.end(); di++) {
+      for (di = fcharges.begin(); di != fcharges.end(); ++di) {
         if (ni > _mol.NumAtoms())
           continue;
 
@@ -4268,7 +4268,7 @@ namespace OpenBabel
       cout << "----------------------------------------" << endl;
 
       ni = 1;
-      for (di = pcharges.begin(); di != pcharges.end(); di++) {
+      for (di = pcharges.begin(); di != pcharges.end(); ++di) {
         if (ni > _mol.NumAtoms())
           continue;
 
