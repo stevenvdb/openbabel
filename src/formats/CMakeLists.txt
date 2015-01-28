@@ -48,7 +48,6 @@ set(formats_compchem
       molproformat
       mopacformat
       nwchemformat
-      orcaformat
       pwscfformat
       qchemformat
       turbomoleformat
@@ -56,6 +55,13 @@ set(formats_compchem
       xsfformat
       zindoformat
   )
+
+if(HAVE_REGEX_H)
+  set(formats_compchem
+      ${formats_compchem} orcaformat
+  )
+endif(HAVE_REGEX_H)
+
 
 if(MSVC OR HAVE_REGEX_H)
   set(formats_compchem
