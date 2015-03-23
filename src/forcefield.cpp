@@ -1786,7 +1786,8 @@ namespace OpenBabel
     }
 
     double defaultRotor = 1.0/sqrt((double)rl.Size());
-    for (unsigned int c = 0; c < conformers; ++c) {
+    unsigned c = 0;
+    while (c < conformers) {
       _mol.SetCoordinates(initialCoord);
 
       // Choose the rotor key based on current weightings
@@ -1809,7 +1810,11 @@ namespace OpenBabel
             total += rotorWeights[i][j];
         }
       }
-      rotamers.SetCurrentCoordinates(_mol, rotorKey);
+      if (rotamers.SetCurrentCoordinates(_mol, rotorKey))
+        ++c;
+      else
+        continue; // rotor setting is invalid (e.g., weird torsions for rings)
+
       SetupPointers(); // update pointers to atom positions in the OBFFCalculation objects
 
       _loglvl = OBFF_LOGLVL_NONE;
