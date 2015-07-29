@@ -26,15 +26,13 @@ GNU General Public License for more details.
 #include <vector>
 #include <string>
 
-/*! \brief
- * Convenience function to convert energy units.
- *
- * \param[in] unit The energy unit to be converted, e.g. "kJ/mol", 
- *                 "Hartree", "Rydberg", "eV" or "electronvolt"
- * \return a factor to multiply energies with.
- */
-double energyToKcal(std::string unit);
-    
+namespace OpenBabel {
+
+ const double HARTEE_TO_KCALPERMOL = 627.509469;
+ const double KJPERMOL_TO_KCALPERMOL = 1.0/4.184;
+ const double RYDBERG_TO_KCALPERMOL = 313.755026;
+ const double ELECTRONVOLT_TO_KCALPERMOL = 23.060538;
+  
 /*! \brief
  * Convenience function to extract thermochemistry from a molecule structure
  *
@@ -55,7 +53,11 @@ double energyToKcal(std::string unit);
  * \return true if all values were found, false otherwise.
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 extern "C" bool extract_thermochemistry(OpenBabel::OBMol  &mol,
+=======
+ OBAPI bool extract_thermochemistry(OpenBabel::OBMol  &mol,
+>>>>>>> Replace unit conversion utility function with constants. Still need it though for initialising heat of formation table, but replaced it with more efficient lookup. Add extract_thermochemistry to the public DLL API and namespace it in Open Babel.
                                         bool    bVerbose,
                                         int    *Nsymm,
                                         int     Nrotbonds,
@@ -85,6 +87,8 @@ bool extract_thermochemistry(OpenBabel::OBMol  &mol,
                                     double *CPT,
                                     std::vector<double> &Scomponents);
 >>>>>>> added C indicator in header file
+
+}
 
 #endif //DATA_UTILITIES_H
 
