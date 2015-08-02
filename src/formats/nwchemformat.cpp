@@ -764,7 +764,7 @@ static const char* DIPOLE_MOMENT_PATTERN = "Nuclear Dipole moment (a.u.)";
     // Reading inital parameters of calculation such as
     // used theory and calculation type for better
     // recognition futher output
-    while	(ifs.getline(buffer,BUFF_SIZE) != NULL)
+    while	(ifs.getline(buffer,BUFF_SIZE))
     {
         if(strstr(buffer,GEOMETRY_PATTERN) != NULL)
         {
