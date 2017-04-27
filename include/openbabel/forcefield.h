@@ -571,6 +571,7 @@ namespace OpenBabel
     bool 	_cutoff; //!< true = cut-off enabled
     double 	_rvdw; //!< VDW cut-off distance
     double 	_rele; //!< Electrostatic cut-off distance
+    bool _exclusion; //Use exclusion rules or not
     OBBitVec	_vdwpairs; //!< VDW pairs that should be calculated
     OBBitVec	_elepairs; //!< Electrostatic pairs that should be calculated
     int 	_pairfreq; //!< The frequence to update non-bonded pairs
@@ -999,6 +1000,7 @@ namespace OpenBabel
     bool SetLogLevel(int level);
     /*! \return The log level.
      */
+    bool SetExclusion(bool exclusion);
     int GetLogLevel() { return _loglvl; }
     /*! Print msg to the logfile.
      *  \param msg The message to print.

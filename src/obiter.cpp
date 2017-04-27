@@ -1305,8 +1305,8 @@ namespace OpenBabel
       }
 
       if (a->GetIdx() >= b->GetIdx()) continue;
-      if (a->IsConnected(b)) continue;
-      if (a->IsOneThree(b)) continue;
+      //if (a->IsConnected(b)) continue;
+      //if (a->IsOneThree(b)) continue;
 
       foundPair = true;
     }
@@ -1336,8 +1336,8 @@ namespace OpenBabel
       }
 
       if (a->GetIdx() >= b->GetIdx()) continue;
-      if (a->IsConnected(b)) continue;
-      if (a->IsOneThree(b)) continue;
+      //if (a->IsConnected(b)) continue;
+      //if (a->IsOneThree(b)) continue;
 
       foundPair = true;
     }
@@ -1384,8 +1384,8 @@ namespace OpenBabel
       }
 
       if (a->GetIdx() >= b->GetIdx()) continue;
-      if (a->IsConnected(b)) continue;
-      if (a->IsOneThree(b)) continue;
+      //if (a->IsConnected(b)) continue;
+      //if (a->IsOneThree(b)) continue;
 
 
       foundPair = true;

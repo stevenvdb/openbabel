@@ -402,6 +402,7 @@ namespace OpenBabel {
       energy = 0.0;
       return;
     }
+    //printf("Vdw between %-5d %-5d\n", idx_a, idx_b );
 
     vector3 da, db;
     double term6, term12, dE, term7, term13, rabSquared = 0.0;
@@ -459,9 +460,11 @@ namespace OpenBabel {
     unsigned int j = 0;
     for (i = _vdwcalculations.begin(); i != _vdwcalculations.end(); ++i, ++j) {
       // Cut-off check
-      if (_cutoff)
-        if (!_vdwpairs.BitIsSet(j))
+      if (_cutoff){
+        if (!_vdwpairs.BitIsSet(j)){
           continue;
+        }
+      }
 
       i->template Compute<gradients>();
       energy += i->energy;
@@ -585,6 +588,7 @@ namespace OpenBabel {
     _vdwcalculations           = src._vdwcalculations;
     _electrostaticcalculations = src._electrostaticcalculations;
     _init                      = src._init;
+    //_exclusion                 = src._exclusion;
 
     return *this;
   }
@@ -1415,15 +1419,14 @@ namespace OpenBabel {
     //
     IF_OBFF_LOGLVL_LOW
       OBFFLog("SETTING UP VAN DER WAALS CALCULATIONS...\n");
+      printf("Exclusion is %s\n",_exclusion ? "true" : "false");
 
     FOR_PAIRS_OF_MOL(p, _mol) {
       a = _mol.GetAtom((*p)[0]);
       b = _mol.GetAtom((*p)[1]);
-
       // skip this vdw if the atoms are ignored
       if ( _constraints.IsIgnored(a->GetIdx()) || _constraints.IsIgnored(b->GetIdx()) )
         continue;
-
       // if there are any groups specified, check if the two atoms are in a single _interGroup or if
       // two two atoms are in one of the _interGroups pairs.
       if (HasGroups()) {
@@ -1441,14 +1444,18 @@ namespace OpenBabel {
 
         if (!validVDW)
           continue;
+
+      }
+      if (a->IsConnected(b) && _exclusion) {
+        //printf("Excluded %5d - %5d",a->GetIdx(),b->GetIdx());
+        continue;
       }
 
-      if (a->IsConnected(b)) {
+      if (a->IsOneThree(b) && _exclusion ) {
+        //printf("Excluded %5d - %5d",a->GetIdx(),b->GetIdx());
         continue;
       }
-      if (a->IsOneThree(b)) {
-        continue;
-      }
+
 
       if (SetupVDWCalculation(a, b, vdwcalc)) {
         _vdwcalculations.push_back(vdwcalc);
@@ -1457,7 +1464,7 @@ namespace OpenBabel {
 
     // NOTE: No electrostatics are set up
     // If you want electrostatics with UFF, you will need to call
-    // SetupElectrostatics() manually
+        // SetupElectrostatics() manually
 
     return true;
   }

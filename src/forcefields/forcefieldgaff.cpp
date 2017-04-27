@@ -1411,9 +1411,14 @@ namespace OpenBabel
         OBFFParameter *parameter_a;
         double Ra,Ea;
         parameter_a = GetParameter(a->GetType(), NULL, NULL, NULL, _ffvdwparams);
+
+      if (parameter_a == NULL) { // no vdw parameter -> use hydrogen
+        Ra = 1.4870;
+        Ea = 0.0157;
+      } else {
         Ra = parameter_a->_dpar[0];
         Ea = parameter_a->_dpar[1];
-
+      }
         snprintf(_logbuf, BUFF_SIZE, "%d\t%8.3f\t%8.3f\n", a->GetIdx(), Ea, Ra);
         OBFFLog(_logbuf);
       }

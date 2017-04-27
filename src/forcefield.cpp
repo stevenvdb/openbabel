@@ -974,6 +974,12 @@ namespace OpenBabel
     return true;
   }
 
+  bool OBForceField::SetExclusion(bool exclusion)
+  {
+    _exclusion = exclusion;
+    return true;
+  }
+
   // This function might need expanding, bu could really increase performance for
   // avogadro's AutoOpt tool
   bool OBForceField::IsSetupNeeded(OBMol &mol)
@@ -2065,7 +2071,7 @@ namespace OpenBabel
       OBAtom *b = _mol.GetAtom((*p)[1]);
 
       // Check whether or not this interaction is included
-      if (HasGroups()) {
+      if (HasGroups() && _exclusion) {
         bool isIncludedPair = false;
         for (size_t i=0; i < _interGroup.size(); ++i) {
           if (_interGroup[i].BitIsOn(a->GetIdx()) &&

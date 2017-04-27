@@ -713,8 +713,8 @@ namespace OpenBabel
       #endif
 
       IF_OBFF_LOGLVL_HIGH {
-        snprintf(_logbuf, BUFF_SIZE, "%2d   %2d     %8.3f  %8.3f  %8.3f  %8.3f\n",
-                atoi(_vdwcalculations[i].a->GetType()), atoi(_vdwcalculations[i].b->GetType()),
+        snprintf(_logbuf, BUFF_SIZE, "%-5d %-5d  %8.3f  %8.3f  %8.3f  %8.3f\n",
+                _vdwcalculations[i].a->GetIdx(), _vdwcalculations[i].b->GetIdx(),
                 _vdwcalculations[i].rab, _vdwcalculations[i].R_AB, _vdwcalculations[i].epsilon, _vdwcalculations[i].energy);
         OBFFLog(_logbuf);
       }
@@ -800,7 +800,7 @@ namespace OpenBabel
 
       IF_OBFF_LOGLVL_HIGH {
         snprintf(_logbuf, BUFF_SIZE, "%2d   %2d   %8.3f  %8.3f  %8.3f  %8.3f\n",
-                atoi(_electrostaticcalculations[i].a->GetType()), atoi(_electrostaticcalculations[i].b->GetType()),
+                _electrostaticcalculations[i].a->GetIdx(), _electrostaticcalculations[i].b->GetIdx(),
                 _electrostaticcalculations[i].rab, _electrostaticcalculations[i].a->GetPartialCharge(),
                 _electrostaticcalculations[i].b->GetPartialCharge(), _electrostaticcalculations[i].energy);
         OBFFLog(_logbuf);
@@ -3509,8 +3509,21 @@ namespace OpenBabel
           }
         }
 
+
+
         if (!validVDW)
           continue;
+      }
+
+      // Apply exclusion rules
+      if (a->IsConnected(b) && _exclusion) {
+        //printf("Excluded %5d - %5d",a->GetIdx(),b->GetIdx());
+        continue;
+      }
+
+      if (a->IsOneThree(b) && _exclusion ) {
+        //printf("Excluded %5d - %5d",a->GetIdx(),b->GetIdx());
+        continue;
       }
 
       OBFFParameter *parameter_a, *parameter_b;
@@ -3521,8 +3534,8 @@ namespace OpenBabel
           snprintf(_logbuf, BUFF_SIZE, "   COULD NOT FIND VAN DER WAALS PARAMETERS FOR %d-%d (IDX)...\n", a->GetIdx(), b->GetIdx());
           OBFFLog(_logbuf);
         }
-
-        return false;
+        continue;
+        //return false;
       }
 
       vdwcalc.a = a;
@@ -3644,6 +3657,16 @@ namespace OpenBabel
 
         if (!validEle)
           continue;
+      }
+      // Apply exclusion rules
+      if (a->IsConnected(b) && _exclusion) {
+        //printf("Excluded %5d - %5d",a->GetIdx(),b->GetIdx());
+        continue;
+      }
+
+      if (a->IsOneThree(b) && _exclusion ) {
+        //printf("Excluded %5d - %5d",a->GetIdx(),b->GetIdx());
+        continue;
       }
 
       elecalc.qq = 332.0716 * a->GetPartialCharge() * b->GetPartialCharge();
