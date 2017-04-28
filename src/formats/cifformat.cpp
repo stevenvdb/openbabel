@@ -1611,16 +1611,6 @@ namespace OpenBabel
               }
           }
       }
-<<<<<<< HEAD
-
-    ofs <<"loop_"<<endl
-	<<"    _atom_site_type_symbol" <<endl
-	<<"    _atom_site_label"       <<endl
-	<<"    _atom_site_fract_x"     <<endl
-	<<"    _atom_site_fract_y"     <<endl
-	<<"    _atom_site_fract_z"     <<endl
-	<<"    _atom_site_occupancy"   <<endl;
-=======
     ofs << "loop_"                      << endl
         << "    _atom_site_label"       << endl
         << "    _atom_site_type_symbol" << endl
@@ -1628,7 +1618,6 @@ namespace OpenBabel
         << "    _atom_site_fract_y"     << endl
         << "    _atom_site_fract_z"     << endl
         << "    _atom_site_occupancy"   << endl;
->>>>>>> CIF output wraps fractional coordinates to [0, 1]
     unsigned int i = 0;
     FOR_ATOMS_OF_MOL(atom, *pmol)
       {

@@ -2458,11 +2458,7 @@ namespace OpenBabel
       if (denom != 0.0) {
         step = fabs(step - delta * (e_n2 - e_n1) / denom);
         if (step > max_scl) {
-<<<<<<< HEAD
           cerr << "WARNING: damped steplength " << step << " to " << max_scl << endl;
-=======
-          //          cout << "WARNING: damped steplength " << step << " to " << max_scl << endl;
->>>>>>> Better ensure forcefield convergence by checking maximum gradient.
           step = max_scl;
         }
       } else {

@@ -1261,13 +1261,8 @@ namespace OpenBabel
       dp->SetOrigin(fileformatInput);
       mol.SetData(dp);
     }
-<<<<<<< HEAD
-    mol.SetTotalCharge(charge);
-=======
     mol.SetTotalCharge(total_charge);
     mol.SetTotalSpinMultiplicity(spin_multiplicity);
->>>>>>> Moved storing total charge in gaussformat.cpp
-
     mol.SetTitle(title);
     return(true);
   }

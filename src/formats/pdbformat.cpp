@@ -748,6 +748,48 @@ namespace OpenBabel
   }
 
   ////////////////////////////////////////////////////////////////
+  static void fixRhombohedralSpaceGroupWriter(string &strHM)
+  {
+    /* This is due to the requirment of PDB to name rhombohedral groups
+       with H (http://deposit.rcsb.org/adit/docs/pdb_atom_format.html) */
+    const int SIZE = 7;
+    const char* groups[SIZE]  =   {"R 3:H",
+                                   "R -3:H",
+                                   "R 3 2:H",
+                                   "R 3 m:H",
+                                   "R 3 c:H",
+                                   "R -3 m:H",
+                                   "R -3 c:H"};
+
+    std::vector<string> vec(groups, groups + SIZE);
+    if(std::find(vec.begin(), vec.end(), strHM) != vec.end())
+    {
+      strHM[0] = 'H';
+    }
+  }
+
+  static void fixRhombohedralSpaceGroupReader(string &strHM)
+  {
+    /* This is due to the requirment of PDB to name rhombohedral groups
+       with H (http://deposit.rcsb.org/adit/docs/pdb_atom_format.html) */
+    const int SIZE = 7;
+    const char* groups[SIZE]  =   {"H 3",
+                                   "H -3",
+                                   "H 3 2",
+                                   "H 3 m",
+                                   "H 3 c",
+                                   "H -3 m",
+                                   "H -3 c"};
+
+    std::vector<string> vec(groups, groups + SIZE);
+
+    if(std::find(vec.begin(), vec.end(), strHM) != vec.end())
+    {
+      strHM[0] = 'R';
+      strHM += ":H";
+    }
+  }
+
   /*
 
      From http://deposit.rcsb.org/adit/docs/pdb_atom_format.html

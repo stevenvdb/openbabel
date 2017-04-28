@@ -52,12 +52,7 @@ namespace OpenBabel {
  * \param[out] Scomponents Translational, Rotational and Vibrational components of S0
  * \return true if all values were found, false otherwise.
  */
-<<<<<<< HEAD
-<<<<<<< HEAD
-extern "C" bool extract_thermochemistry(OpenBabel::OBMol  &mol,
-=======
  OBAPI bool extract_thermochemistry(OpenBabel::OBMol  &mol,
->>>>>>> Replace unit conversion utility function with constants. Still need it though for initialising heat of formation table, but replaced it with more efficient lookup. Add extract_thermochemistry to the public DLL API and namespace it in Open Babel.
                                         bool    bVerbose,
                                         int    *Nsymm,
                                         int     Nrotbonds,
@@ -71,23 +66,6 @@ extern "C" bool extract_thermochemistry(OpenBabel::OBMol  &mol,
                                         double *CVT,
                                         double *CPT,
                                         std::vector<double> &Scomponents);
-=======
-bool extract_thermochemistry(OpenBabel::OBMol  &mol,
-                                    bool    bVerbose,
-                                    int    *Nsymm,
-                                    int     Nrotbonds,
-                                    double  dbdt,
-                                    double *temperature,
-                                    double *DeltaHf0,
-                                    double *DeltaHfT,
-                                    double *DeltaGfT,
-                                    double *DeltaSfT,
-                                    double *S0T,
-                                    double *CVT,
-                                    double *CPT,
-                                    std::vector<double> &Scomponents);
->>>>>>> added C indicator in header file
-
 }
 
 #endif //DATA_UTILITIES_H
